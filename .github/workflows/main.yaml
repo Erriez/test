@@ -38,6 +38,7 @@ jobs:
       - name: Package Application
         uses: JackMcKew/pyinstaller-action-windows@main
         with:
+          spec: hello.spec
           path: .
 
       - uses: actions/upload-artifact@v4
