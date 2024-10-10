@@ -38,10 +38,16 @@ jobs:
       - name: Package Application
         uses: JackMcKew/pyinstaller-action-windows@main
         with:
-          spec: hello.spec
+          spec: test.spec
           path: .
+
+      - name: Create installer
+        uses: joncloud/makensis-action@v4.1
+        with:
+          script-file: "nsis/install.nsi"
+          arguments: "/V4 /DVERSION=${{steps.tag.outputs.tag}}"
 
       - uses: actions/upload-artifact@v4
         with:
-          name: hello
-          path: dist/hello
+          name: test
+          path: dist/windows/test
