@@ -84,6 +84,12 @@ jobs:
           echo "Contents data/version.txt:"
           cat data/version.txt
 
+      - name: Save website.url
+        run: |
+          echo "[InternetShortcut]" > website.url
+          echo "URL=${{github.server_url}}/${{github.repository}}" >> website.url
+          cat website.url
+
       - name: Build Windows executable
         run: |
           pip install pyinstaller
@@ -105,7 +111,7 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Windows Build
+          name: erriez-test-windows-b${{github.run_attempt}}
           if-no-files-found: error
           path: |
             LICENSE
@@ -114,7 +120,7 @@ jobs:
             erriez-test.exe.sha1
             erriez-test-setup-v${{steps.tag.outputs.tag}}.exe
             erriez-test-setup-v${{steps.tag.outputs.tag}}.exe.sha1
-          
+
 
   build-linux:
     runs-on: ubuntu-latest
@@ -183,7 +189,7 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Linux Build
+          name: erriez-test-linux-b${{github.run_attempt}}
           if-no-files-found: error
           path: |
             LICENSE
