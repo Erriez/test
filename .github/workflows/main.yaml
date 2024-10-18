@@ -56,9 +56,68 @@ on:
 
 
 jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - name: Check-out repository
+        uses: actions/checkout@v4
+
+      - name: Get tag
+        id: tag
+        uses: Erriez/action-get-tag@v1.0.1
+        with:
+          strip_v: true # Remove v character from version
+          default: v0.0.0 # Default version when tag not found
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          architecture: 'x64'
+          cache: 'pip'
+          cache-dependency-path: |
+            **/requirements*.txt
+
+      - name: Save version.txt
+        run: |
+          echo "${{steps.tag.outputs.tag}}" > data/version.txt
+          echo "Contents data/version.txt:"
+          cat data/version.txt
+
+      - name: Build Windows executable
+        run: |
+          pip install pyinstaller
+          pyinstaller --distpath . test_windows.spec
+
+      - name: Create Windows NSIS installer
+        uses: joncloud/makensis-action@v4.1
+        with:
+          script-file: "nsis/install.nsi"
+          arguments: "/V4 /DVERSION=${{steps.tag.outputs.tag}}"
+
+      - name: Create executable hashes
+        run: |
+          sha1sum erriez-test-linux > erriez-test-linux.sha1
+          sha1sum erriez-test-linux.run > erriez-test-linux.run.sha1
+          cat erriez-test-linux.sha1
+          cat erriez-test-linux.run.sha1
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Linux Build
+          if-no-files-found: error
+          path: |
+            LICENSE
+            website.url
+            erriez-test-win64.exe
+            erriez-test-win64.sha1
+            erriez-test-setup-win64.run
+            erriez-test-setup-win64.run.sha1
+          
+
   build-linux:
     runs-on: ubuntu-latest
-
     steps:
       - name: Check-out repository
         uses: actions/checkout@v4
@@ -94,7 +153,7 @@ jobs:
       - name: Build Linux executable
         run: |
           pip install pyinstaller
-          pyinstaller --distpath . test.spec
+          pyinstaller --distpath . test_linux.spec
 
       - name: Create Linux installer
         run: |
