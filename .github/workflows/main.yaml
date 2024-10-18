@@ -87,7 +87,7 @@ jobs:
       - name: Build Windows executable
         run: |
           pip install pyinstaller
-          pyinstaller --distpath . test.spec
+          pyinstaller --onefile --noconsole --distpath . --name erriez-test test.py
 
       - name: Create Windows NSIS installer
         uses: joncloud/makensis-action@v4.1
@@ -97,10 +97,10 @@ jobs:
 
       - name: Create executable hashes
         run: |
-          sha1sum erriez-test-linux > erriez-test-linux.sha1
-          sha1sum erriez-test-linux.run > erriez-test-linux.run.sha1
-          cat erriez-test-linux.sha1
-          cat erriez-test-linux.run.sha1
+          sha1sum erriez-test.exe > erriez-test.exe.sha1
+          sha1sum erriez-test-setup-v${{steps.tag.outputs.tag}}.exe.exe > erriez-test-setup-v${{steps.tag.outputs.tag}}.exe.sha1
+          cat erriez-test.exe.sha1
+          cat erriez-test-setup-v${{steps.tag.outputs.tag}}.exe.sha1
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
@@ -110,10 +110,10 @@ jobs:
           path: |
             LICENSE
             website.url
-            erriez-test-win64.exe
-            erriez-test-win64.sha1
-            erriez-test-setup-win64.run
-            erriez-test-setup-win64.run.sha1
+            erriez-test.exe
+            erriez-test.exe.sha1
+            erriez-test-setup-v${{steps.tag.outputs.tag}}.exe
+            erriez-test-setup-v${{steps.tag.outputs.tag}}.exe.sha1
           
 
   build-linux:
@@ -153,7 +153,7 @@ jobs:
       - name: Build Linux executable
         run: |
           pip install pyinstaller
-          pyinstaller --distpath . test.spec
+          pyinstaller --onefile --distpath . --name erriez-test test.py
 
       - name: Create Linux installer
         run: |
@@ -161,7 +161,7 @@ jobs:
           sudo apt install makeself
           
           # Copy executable to installer directory
-          cp erriez-test-linux installer-linux/program/erriez-test
+          cp erriez-test installer-linux/program/
 
           # Create Linux installer
           OUTPUT_FILE=erriez-test-linux.run
@@ -175,10 +175,10 @@ jobs:
 
       - name: Create executable hashes
         run: |
-          sha1sum erriez-test-linux > erriez-test-linux.sha1
+          sha1sum erriez-test > erriez-test.sha1
           sha1sum erriez-test-linux.run > erriez-test-linux.run.sha1
-          cat erriez-test-linux.sha1
-          cat erriez-test-linux.run.sha1
+          cat erriez-test.sha1
+          cat erriez-test.run.sha1
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
@@ -188,7 +188,7 @@ jobs:
           path: |
             LICENSE
             website.url
-            erriez-test-linux
-            erriez-test-linux.sha1
-            erriez-test-linux.run
-            erriez-test-linux.run.sha1
+            erriez-test
+            erriez-test.sha1
+            erriez-test.run
+            erriez-test.run.sha1
