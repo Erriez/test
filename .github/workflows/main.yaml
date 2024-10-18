@@ -88,8 +88,8 @@ jobs:
       - name: Save website.url
         run: |
           echo "[InternetShortcut]" > website.url
-          echo "URL=${{github.server_url}}/${{github.repository}}" >> website.url
-          cat website.url
+          echo "URL=${{github.server_url}}/${{github.repository}}" >> dist/website.url
+          cat dist/website.url
 
       - name: Build Linux executable
         run: |
@@ -116,10 +116,10 @@ jobs:
 
       - name: Create executable hashes
         run: |
-          sha1sum erriez-test-linux > erriez-test-linux.sha1
-          sha1sum erriez-test-linux-setup.run > erriez-test-linux-setup.run.sha1
-          cat erriez-test-linux.sha1
-          cat erriez-test-linux-setup.run.sha1
+          sha1sum dist/erriez-test-linux > dist/erriez-test-linux.sha1
+          sha1sum dist/erriez-test-linux.run > dist/erriez-test-linux.run.sha1
+          cat dist/erriez-test-linux.sha1
+          cat dist/erriez-test-linux.run.sha1
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
@@ -128,8 +128,8 @@ jobs:
           if-no-files-found: error
           path: |
             LICENSE
-            website.url
-            erriez-test-linux
-            erriez-test-linux.sha1
-            erriez-test-linux-setup.run
-            erriez-test-linux-setup.run.sha1
+            dist/website.url
+            dist/erriez-test-linux
+            dist/erriez-test-linux.sha1
+            dist/erriez-test-linux.run
+            dist/erriez-test-linux.run.sha1
