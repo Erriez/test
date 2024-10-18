@@ -16,8 +16,8 @@
 !define COPYRIGHT "Erriez © 2024"
 !define DESCRIPTION "Test Application"
 !define LICENSE_TXT "LICENSE"
-!define INSTALLER_NAME "test_setup_v${VERSION}.exe"
-!define MAIN_APP_EXE "test.exe"
+!define INSTALLER_NAME "erriez-test-setup-v${VERSION}.exe"
+!define MAIN_APP_EXE "erriez-test.exe"
 !define INSTALL_TYPE "SetShellVarContext current"
 !define REG_ROOT "HKCU"
 !define REG_APP_PATH "Software\Microsoft\Windows\CurrentVersion\App Paths\${MAIN_APP_EXE}"
@@ -37,7 +37,7 @@ VIAddVersionKey "FileVersion"  "${VERSION}"
 SetCompressor ZLIB
 Name "${APP_NAME}"
 Caption "${APP_NAME}"
-OutFile "..\dist\${INSTALLER_NAME}"
+OutFile "..\${INSTALLER_NAME}"
 BrandingText "${APP_NAME}"
 XPStyle on
 InstallDirRegKey "${REG_ROOT}" "${REG_APP_PATH}" ""
@@ -86,7 +86,7 @@ Section -MainProgram
 ${INSTALL_TYPE}
 SetOverwrite ifnewer
 SetOutPath "$INSTDIR"
-File "/oname=test.exe" "..\dist\test.exe"
+File "/oname=erriez-test.exe" "..\erriez-test.exe"
 File "/oname=LICENSE" "..\LICENSE"
 SectionEnd
 

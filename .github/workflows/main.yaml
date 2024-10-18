@@ -87,7 +87,7 @@ jobs:
       - name: Build Windows executable
         run: |
           pip install pyinstaller
-          pyinstaller --distpath . test_windows.spec
+          pyinstaller --distpath . test.spec
 
       - name: Create Windows NSIS installer
         uses: joncloud/makensis-action@v4.1
@@ -153,7 +153,7 @@ jobs:
       - name: Build Linux executable
         run: |
           pip install pyinstaller
-          pyinstaller --distpath . test_linux.spec
+          pyinstaller --distpath . test.spec
 
       - name: Create Linux installer
         run: |
