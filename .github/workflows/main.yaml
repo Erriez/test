@@ -105,7 +105,7 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Linux Build
+          name: Windows Build
           if-no-files-found: error
           path: |
             LICENSE
