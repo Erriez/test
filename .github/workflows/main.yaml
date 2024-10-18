@@ -100,6 +100,10 @@ jobs:
           strip_v: true # Remove v character from version
           default: v0.0.0 # Default version when tag not found
 
+      - name: Get Git tag
+        run:
+          echo $GITHUB_REF_NAME
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
