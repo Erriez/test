@@ -94,7 +94,7 @@ jobs:
       - name: Build Linux executable
         run: |
           pip install pyinstaller
-          pyinstaller --onefile -m erriez-test-linux test.py
+          pyinstaller test.spec
 
       - name: Create Linux installer
         run: |
